@@ -14,11 +14,11 @@ using bth.Items.Blocks;
 
 namespace bth.Items.PHitems
 {
-    internal class PHbowsplit : ModItem
+    internal class PHwand : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("split bow");
+            DisplayName.SetDefault("placeholder wand");
         }
         public override void SetDefaults()
         {
@@ -33,10 +33,10 @@ namespace bth.Items.PHitems
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 10;
             Item.shootSpeed = 15;
-            
-            Item.shoot = ModContent.ProjectileType<PHbulletsplit>();
+
+            Item.shoot = ModContent.ProjectileType<PHwandproj>();
         }
-       
+
         public override void AddRecipes()
         {
             Recipe.Create(ModContent.ItemType<PHbow>())
@@ -44,11 +44,34 @@ namespace bth.Items.PHitems
                 .AddTile(TileID.Anvils)
                 .Register();
         }
-        
+
         public override bool AltFunctionUse(Player player)
         {
-            player.Heal(10);
+            
             return false;
         }
+    }
+    internal class PHwandproj : ModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.friendly = true;
+            Projectile.width = 26;
+            Projectile.height = 26;
+            Projectile.aiStyle = 0;
+            Projectile.timeLeft = 180;
+            Projectile.penetrate = -1;
+            Projectile.DamageType = DamageClass.Ranged;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Player player = new Player();
+            Projectile.rotation = Vector2.Normalize(Main.MouseWorld - player.position).ToRotation();
+        }
+        public override void AI()
+        {
+            
+        }
+        
     }
 }

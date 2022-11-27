@@ -17,7 +17,6 @@ namespace bth.Items.PHitems
     internal class PHbulletsplit : ModProjectile
     {
 
-        PHbow bow = new PHbow();
         
         public override void SetDefaults()
         {
@@ -31,7 +30,7 @@ namespace bth.Items.PHitems
         }
         public override void OnSpawn(IEntitySource source)
         {
-            Main.NewText(Projectile.damage);
+            //Main.NewText(Projectile.damage);
         }
 
         public override void AI()
