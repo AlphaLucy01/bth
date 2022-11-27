@@ -12,13 +12,13 @@ using Microsoft.Xna.Framework;
 using bth.Items.bars;
 using bth.Items.Blocks;
 
-namespace bth.Items.PHitems
+namespace bth.Items.PHitems.Ranged
 {
-    internal class PHbowsplit : ModItem
+    internal class PHbow : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("split bow");
+            DisplayName.SetDefault("placeholder bow");
         }
         public override void SetDefaults()
         {
@@ -33,22 +33,24 @@ namespace bth.Items.PHitems
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 10;
             Item.shootSpeed = 15;
-            
-            Item.shoot = ModContent.ProjectileType<PHbulletsplit>();
+            Item.shoot = ModContent.ProjectileType<PHbullet>();
         }
-       
+        public int idamage
+        {
+            get { return Item.damage; }
+            
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PHbullet2>(), damage, knockback, Main.myPlayer, 0);
+            return true;
+        }
         public override void AddRecipes()
         {
             Recipe.Create(ModContent.ItemType<PHbow>())
                 .AddIngredient<examplebar>(10)
                 .AddTile(TileID.Anvils)
                 .Register();
-        }
-        
-        public override bool AltFunctionUse(Player player)
-        {
-            player.Heal(10);
-            return false;
         }
     }
 }

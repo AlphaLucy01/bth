@@ -10,9 +10,9 @@ using Terraria.IO;
 using Terraria.ID;
 using Terraria.DataStructures;
 
-namespace bth.Items.PHitems
+namespace bth.Items.PHitems.Ranged
 {
-    internal class PHbullet2 : ModProjectile
+    internal class PHbullet : ModProjectile
     {
         
 
@@ -24,7 +24,6 @@ namespace bth.Items.PHitems
             Projectile.aiStyle = 0;
             Projectile.timeLeft = 180;
             Projectile.penetrate = -1;
-            Projectile.damage = 5;
             Projectile.DamageType = DamageClass.Ranged;
         }
         public override void OnSpawn(IEntitySource source)
@@ -33,25 +32,25 @@ namespace bth.Items.PHitems
         }
         public override void AI()
         {
-            Projectile.ai[0]++;
-            Projectile.ai[1]++;
             Vector2 initialCenter = Projectile.Center;
             Vector2 initialVelocity = Projectile.velocity;
-            Vector2 offset = Vector2.Normalize(Projectile.velocity).RotatedBy(MathHelper.PiOver2);
-            
+            Projectile.ai[0]++;
             int wavesPerSecond = 2;
-            float sine = -(float)Math.Sin(MathHelper.ToRadians(Projectile.ai[0] * 6f * wavesPerSecond));
+            float sine = (float)Math.Sin(MathHelper.ToRadians(Projectile.ai[0] * 6f * wavesPerSecond));
+            Vector2 offset = Vector2.Normalize(Projectile.velocity).RotatedBy(MathHelper.PiOver2);
             float amplitude = 18f;  // 1.5 tiles
             offset *= sine * amplitude;
             initialCenter += Projectile.velocity;
             Projectile.Center = initialCenter + offset;
-            //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, ProjectileID.ChlorophyteArrow,Projectile.damage, Projectile.knockBack,Main.myPlayer);
-            Dust.NewDust(Projectile.position, 1, 1, DustID.InfernoFork);
+            //
+
+            Dust.NewDust(Projectile.position,1,1,DustID.InfernoFork,0,0,0,Color.AntiqueWhite);
         }
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+        
     }
     
 }

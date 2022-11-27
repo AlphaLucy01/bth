@@ -12,7 +12,7 @@ using Terraria.DataStructures;
 using log4net.Util;
 using Terraria.Chat;
 
-namespace bth.Items.PHitems
+namespace bth.Items.PHitems.Ranged
 {
     internal class PHbulletsplit : ModProjectile
     {

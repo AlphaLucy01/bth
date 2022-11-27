@@ -9,10 +9,39 @@ using Terraria.IO;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using bth.Items.bars;
+using bth.Items.Blocks;
 
 namespace bth.Items.PHitems
 {
-    internal class PHpick
+    internal class PHpick : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("placeholder pick");
+        }
+        public override void SetDefaults()
+        {
+            Item.height = 64;
+            Item.width = 30;
+            Item.UseSound = SoundID.Item1;
+            Item.autoReuse = true;
+            Item.useAnimation = 8;
+            Item.useTime = 8;
+            Item.consumable = false;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 10;
+            Item.shootSpeed = 15;
+            Item.shoot = ModContent.ProjectileType<PHpickproj>();
+        }
+        
+        public override void AddRecipes()
+        {
+            Recipe.Create(ModContent.ItemType<PHpick>())
+                .AddIngredient<examplebar>(10)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 }
