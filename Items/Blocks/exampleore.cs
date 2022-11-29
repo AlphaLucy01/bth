@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 using Terraria;
 using Terraria.ID;
 using bth.Tiles;
-using bth.Items.bars;
+using bth.Items.PHitems.bars;
 
 namespace bth.Items.Blocks
 {
