@@ -11,7 +11,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
-namespace bth.Items.PHitems
+namespace bth.Items.PHitems.Melee
 {
     internal class PHsword
     {

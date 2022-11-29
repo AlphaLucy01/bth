@@ -9,7 +9,7 @@ using Terraria.IO;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using bth.Items.bars;
+using bth.Items.PHitems.bars;
 using bth.Items.Blocks;
 
 namespace bth.Items.PHitems

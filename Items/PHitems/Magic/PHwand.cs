@@ -66,12 +66,7 @@ namespace bth.Items.PHitems.Magic
             return false;
             
         }
-        public override bool AltFunctionUse(Player player)
-        {
-            Main.NewText(Main.player[Main.myPlayer].statManaMax2);
-            return true;
-        }
-
+        
     }
     internal class PHwandproj : ModProjectile
     {
