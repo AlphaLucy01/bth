@@ -9,8 +9,10 @@ using Terraria.IO;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using bth.Items.bars;
+using bth.Items.PHitems.bars;
 using bth.Items.Blocks;
+using Terraria.Audio;
+
 
 namespace bth.Items.PHitems.Magic
 {
@@ -35,9 +37,11 @@ namespace bth.Items.PHitems.Magic
             Item.DamageType = DamageClass.Magic;
             Item.damage = 10;
             Item.shootSpeed = 15;
+            
 
             Item.shoot = ModContent.ProjectileType<PHwandproj>();
         }
+        
 
         public override void AddRecipes()
         {
@@ -46,20 +50,26 @@ namespace bth.Items.PHitems.Magic
                 .AddTile(TileID.Anvils)
                 .Register();
         }
-        Projectile projectil = new Projectile();// bunu yani
+        
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PHwandproj>(), damage, knockback, player.whoAmI);
             timesFired++;
-            Main.NewText(timesFired);
             if(timesFired == 3)
-            {
-                projectil.Kill();
-                //projectile.newprojectile variable olarak depola
+            {    
                 timesFired = 0;
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PHwandproj1>(), damage * 2, knockback,player.whoAmI);
+            } else
+            {
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PHwandproj>(), damage, knockback, player.whoAmI);
             }
+            
             return false;
+            
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            Main.NewText(Main.player[Main.myPlayer].statManaMax2);
+            return true;
         }
 
     }
@@ -73,19 +83,16 @@ namespace bth.Items.PHitems.Magic
             Projectile.aiStyle = 0;
             Projectile.timeLeft = 180;
             Projectile.penetrate = 1;
-            Projectile.DamageType = DamageClass.Ranged;
         }
         public override void OnSpawn(IEntitySource source)
         {
-
-            
-            //Main.NewText(wand.timesFired);
             Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
         }
         public override void AI()
         {
 
         }
+        
 
     }
     internal class PHwandproj1 : ModProjectile
@@ -101,7 +108,6 @@ namespace bth.Items.PHitems.Magic
             Projectile.aiStyle = 0;
             Projectile.timeLeft = 180;
             Projectile.penetrate = 1;
-            Projectile.DamageType = DamageClass.Ranged;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -109,7 +115,14 @@ namespace bth.Items.PHitems.Magic
             Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
         }
         
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            SoundEngine.PlaySound(SoundID.MaxMana);
+            Main.player[Projectile.owner].statMana += (Main.player[Projectile.owner].statManaMax2 * 2) / 50;
+            Main.player[Projectile.owner].ManaEffect((Main.player[Projectile.owner].statManaMax2 * 2) / 50);
+            Main.NewText((Main.player[Projectile.owner].statManaMax2 * 2) / 50);
             
+        }
 
     }
 }
