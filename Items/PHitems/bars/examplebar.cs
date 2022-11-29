@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace bth.Items.bars
+namespace bth.Items.PHitems.bars
 {
     internal class examplebar : ModItem
     {
