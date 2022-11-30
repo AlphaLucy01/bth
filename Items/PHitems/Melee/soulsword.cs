@@ -41,12 +41,6 @@ namespace bth.Items.PHitems.Melee
             Item.shootSpeed = 15;
             Item.shoot = ModContent.ProjectileType<soulswordproj>();
         }
-        public int idamage
-        {
-            get { return Item.damage; }
-        }
-        
-        
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             float numberProjectiles = 5;
@@ -56,6 +50,7 @@ namespace bth.Items.PHitems.Melee
             {
                 Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f;
                 Projectile.NewProjectile(Item.GetSource_FromThis(),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
+                
             }
             
             return false;
@@ -102,11 +97,11 @@ namespace bth.Items.PHitems.Melee
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            target.AddBuff(ModContent.BuffType<souldecay>(), 5);
+            target.AddBuff(ModContent.BuffType<souldecay>(), 240);
         }
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
-            target.AddBuff(ModContent.BuffType<souldecay>(), 280);
+            target.AddBuff(ModContent.BuffType<souldecay>(), 240);
         }
     }
 }
