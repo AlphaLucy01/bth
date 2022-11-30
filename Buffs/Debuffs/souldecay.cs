@@ -20,6 +20,7 @@ namespace bth.Buffs.Debuffs
             Main.buffNoSave[Type] = false;
             BuffID.Sets.LongerExpertDebuff[Type] = true;
         }
+        
 
         public override void Update(Player player, ref int buffIndex)
         {
@@ -28,6 +29,7 @@ namespace bth.Buffs.Debuffs
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.GetGlobalNPC<effectednpc>().lifeRegenDebuff = true;
+            npc.lifeRegen -= 16;
         }
     }
     public class SoulDecayDebuff : ModPlayer
@@ -45,7 +47,7 @@ namespace bth.Buffs.Debuffs
                 if (Player.lifeRegen > 0)
                     Player.lifeRegen = 0;
                 Player.lifeRegenTime = 0;
-                Player.lifeRegen -= 10;
+                Player.lifeRegen -= 16;
             }
         }
     }
