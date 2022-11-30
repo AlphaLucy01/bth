@@ -82,6 +82,7 @@ namespace bth.Items.PHitems.Magic
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
+            Projectile.spriteDirection = Projectile.direction;
         }
         public override void AI()
         {
@@ -108,6 +109,7 @@ namespace bth.Items.PHitems.Magic
         {
             
             Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
+            Projectile.spriteDirection = Projectile.direction;
         }
         
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
