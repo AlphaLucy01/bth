@@ -12,6 +12,9 @@ using Microsoft.Xna.Framework;
 using bth.Items.PHitems.bars;
 using bth.Items.Blocks;
 using bth.Items.PHitems.Ranged;
+using System.Threading;
+using System.Collections;
+using bth.Buffs.Debuffs;
 
 namespace bth.Items.PHitems.Melee
 {
@@ -27,31 +30,83 @@ namespace bth.Items.PHitems.Melee
             Item.width = 30;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
-            Item.useAnimation = 8;
-            Item.useTime = 8;
+            Item.useAnimation = 25;
+            Item.useTime = 60;
+            Item.noMelee = false;
+            Item.useStyle = 1;
             Item.consumable = false;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
+            Item.useStyle = ItemUseStyleID.Swing;
+            Item.DamageType = DamageClass.Melee;
             Item.damage = 10;
             Item.shootSpeed = 15;
-            Item.shoot = ModContent.ProjectileType<PHbullet>();
+            Item.shoot = ModContent.ProjectileType<soulswordproj>();
         }
         public int idamage
         {
             get { return Item.damage; }
-
         }
+        
+        
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PHbullet2>(), damage, knockback, Main.myPlayer, 0);
-            return true;
+            float numberProjectiles = 5;
+            float rotation = MathHelper.ToRadians(30);
+            position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
+            for (int i = 0; i < numberProjectiles; i++)
+            {
+                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f;
+                Projectile.NewProjectile(Item.GetSource_FromThis(),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
+            }
+            
+            return false;
         }
         public override void AddRecipes()
         {
+            
             Recipe.Create(ModContent.ItemType<PHbow>())
                 .AddIngredient<examplebar>(10)
                 .AddTile(TileID.Anvils)
                 .Register();
+        }
+    }
+    internal class soulswordproj : ModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.friendly = true;
+            Projectile.width = 26;
+            Projectile.height = 26;
+            Projectile.aiStyle = 0;
+            Projectile.timeLeft = 120;
+            Projectile.penetrate = 1;
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.tileCollide = false;
+            Projectile.alpha = 0;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
+        }
+        public override void AI()
+        {
+            Projectile.ai[0]++;
+            if (Projectile.ai[0] >= 30)
+            {
+                Projectile.alpha += 11;
+            }
+            Projectile.velocity *= 0.93f;
+            if(Projectile.velocity.Length() < 0.2)
+            {
+                Projectile.Kill();
+            }
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.AddBuff(ModContent.BuffType<souldecay>(), 5);
+        }
+        public override void OnHitPlayer(Player target, int damage, bool crit)
+        {
+            target.AddBuff(ModContent.BuffType<souldecay>(), 280);
         }
     }
 }
