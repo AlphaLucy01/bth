@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using Terraria.ID;
+using bth.Globals;
 
 namespace bth.Buffs.Debuffs
 {
@@ -20,55 +21,16 @@ namespace bth.Buffs.Debuffs
             Main.buffNoSave[Type] = false;
             BuffID.Sets.LongerExpertDebuff[Type] = true;
         }
-        
+
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetModPlayer<SoulDecayDebuff>().lifeRegenDebuff = true;
+            player.GetModPlayer<GPlayer>().lifeRegenDebuff = true;
         }
         public override void Update(NPC npc, ref int buffIndex)
         {
-            npc.GetGlobalNPC<effectednpc>().lifeRegenDebuff = true;
+            npc.GetGlobalNPC<GNPC>().lifeRegenDebuff = true;
             npc.lifeRegen -= 16;
-        }
-    }
-    public class SoulDecayDebuff : ModPlayer
-    {
-        public bool lifeRegenDebuff;
-
-        public override void ResetEffects()
-        {
-            lifeRegenDebuff = false;
-        }
-        public override void UpdateBadLifeRegen()
-        {
-            if (lifeRegenDebuff)
-            {
-                if (Player.lifeRegen > 0)
-                    Player.lifeRegen = 0;
-                Player.lifeRegenTime = 0;
-                Player.lifeRegen -= 16;
-            }
-        }
-    }
-    public class effectednpc : GlobalNPC
-    {
-        public bool lifeRegenDebuff;
-        public override bool InstancePerEntity => true;
-
-        public override void ResetEffects(NPC npc)
-        {
-            lifeRegenDebuff = false;
-        }
-
-        public override void UpdateLifeRegen(NPC npc, ref int damage)
-        {
-            if (lifeRegenDebuff)
-            {
-                if (npc.lifeRegen > 0)
-                    npc.lifeRegen = 0;
-                npc.lifeRegen -= 16;
-            }
         }
     }
 }
