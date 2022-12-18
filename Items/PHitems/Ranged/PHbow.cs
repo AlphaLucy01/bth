@@ -11,6 +11,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using bth.Items.PHitems.bars;
 using bth.Items.Blocks;
+using bth.Items.PHitems.Melee;
 
 namespace bth.Items.PHitems.Ranged
 {
@@ -35,15 +36,11 @@ namespace bth.Items.PHitems.Ranged
             Item.shootSpeed = 15;
             Item.shoot = ModContent.ProjectileType<PHbullet>();
         }
-        public int idamage
-        {
-            get { return Item.damage; }
-            
-        }
+        
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PHbullet2>(), damage, knockback, Main.myPlayer, 0);
-            return true;
+            LIBprojectile.MultipleShot(player, source, position, velocity, type, damage, knockback, 15, 180, true);
+            return false;
         }
         public override void AddRecipes()
         {
