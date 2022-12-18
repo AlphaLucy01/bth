@@ -15,6 +15,7 @@ using bth.Items.PHitems.Ranged;
 using System.Threading;
 using System.Collections;
 using bth.Buffs.Debuffs;
+using System.Security.Cryptography.X509Certificates;
 
 namespace bth.Items.PHitems.Melee
 {
@@ -33,7 +34,7 @@ namespace bth.Items.PHitems.Melee
             Item.useAnimation = 25;
             Item.useTime = 60;
             Item.noMelee = false;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.consumable = false;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.DamageType = DamageClass.Melee;
@@ -43,16 +44,7 @@ namespace bth.Items.PHitems.Melee
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            float numberProjectiles = 5;
-            float rotation = MathHelper.ToRadians(30);
-            position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
-            for (int i = 0; i < numberProjectiles; i++)
-            {
-                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f;
-                Projectile.NewProjectile(Item.GetSource_FromThis(),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
-                
-            }
-            
+            LIBprojectile.MultipleShot(player, source, position, velocity, type, damage, knockback, 5, 30, true);
             return false;
         }
         public override void AddRecipes()
